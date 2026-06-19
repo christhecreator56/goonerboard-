@@ -16,7 +16,7 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { useUpdateMyPresence } from "@/lib/liveblocks";
 import { MultiplayerCursors } from "./MultiplayerCursors";
 
-// Custom Nodes imports
+// Custom Nodes imports for spatial community canvas
 import { NexusTextNode } from "./nodes/NexusTextNode";
 import { NexusTodoNode } from "./nodes/NexusTodoNode";
 import { NexusTableNode } from "./nodes/NexusTableNode";

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useNexusStore } from "@/store/nexusStore";
+import { useGoonStore } from "@/store/nexusStore";
 import { ShieldAlert, Terminal } from "lucide-react";
 
 export default function LoginPage() {
@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [accent, setAccent] = useState<"red" | "green">("green");
   const [error, setError] = useState("");
 
-  const setCurrentUser = useNexusStore((state) => state.setCurrentUser);
+  const setCurrentUser = useGoonStore((state) => state.setCurrentUser);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,14 +22,12 @@ export default function LoginPage() {
     }
     setError("");
 
-    // Set the user in store
     setCurrentUser({
       username: username.trim(),
       color: accent === "green" ? "#00ff66" : "#ff0033",
     });
 
-    // Navigate to default server
-    router.push("/app/nexus-prime");
+    router.push("/app/rizz-hq");
   };
 
   const borderClass = accent === "green" ? "border-[#00ff66]" : "border-[#ff0033]";
@@ -49,7 +47,7 @@ export default function LoginPage() {
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-neutral-800">
           <div className="flex items-center gap-2">
             <Terminal size={18} className={textClass} />
-            <span className="font-black tracking-widest text-sm uppercase">NexusBoard // Auth</span>
+            <span className="font-black tracking-widest text-sm uppercase">GoonBoard // Sign In</span>
           </div>
           <span className="text-[10px] text-neutral-500 font-bold uppercase">v2.4.1</span>
         </div>

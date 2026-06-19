@@ -2,13 +2,14 @@
 
 import React, { useState, useRef, useMemo } from "react";
 import { NodeProps } from "@xyflow/react";
-import { Notebook, FileText, Check, Plus, Edit3, X, Bold, Italic, Underline, List, Heading1, Heading2 } from "lucide-react";
+import { Notebook, Check, Edit3, X, Bold, Italic, Underline, List, Heading1, Heading2 } from "lucide-react";
 import { NexusNodeWrapper } from "../NexusNodeWrapper";
-import { useCanvasStore, type CustomNode } from "@/store/canvasStore";
+import { useUpdateNodeData, useDeleteNode } from "@/lib/liveblocks";
+import { type CustomNode } from "@/store/canvasStore";
 
 export const NexusDocNode: React.FC<NodeProps<CustomNode>> = ({ id, data, selected }) => {
-  const updateNodeData = useCanvasStore((state) => state.updateNodeData);
-  const deleteNode = useCanvasStore((state) => state.deleteNode);
+  const updateNodeData = useUpdateNodeData();
+  const deleteNode = useDeleteNode();
 
   const title = data.title || "Untitled Document";
   const content = data.content || "<h1>Start typing here...</h1>";

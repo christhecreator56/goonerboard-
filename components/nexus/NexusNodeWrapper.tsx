@@ -16,7 +16,6 @@ interface NexusNodeWrapperProps {
 }
 
 export const NexusNodeWrapper: React.FC<NexusNodeWrapperProps> = ({
-  id,
   title,
   onTitleChange,
   onDelete,

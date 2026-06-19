@@ -4,51 +4,47 @@ import React from "react";
 import { useParams } from "next/navigation";
 import { LiveblocksRoomProvider } from "@/lib/liveblocks";
 import { NexusCanvas } from "@/components/nexus/NexusCanvas";
-import { Maximize, Cpu } from "lucide-react";
-import { useNexusStore } from "@/store/nexusStore";
+import { useGoonStore } from "@/store/nexusStore";
+import { LayoutTemplate } from "lucide-react";
 
 export default function CanvasChannelPage() {
   const params = useParams();
-  const serverId = (params?.serverId as string) || "nexus-prime";
-  const channelId = (params?.channelId as string) || "prime-mood";
+  const serverId  = (params?.serverId  as string) || "rizz-hq";
+  const channelId = (params?.channelId as string) || "rizz-moodboard";
 
-  const { servers, channels } = useNexusStore();
-  const currentServer = servers.find((s) => s.id === serverId) || servers[0];
-  const currentChannel = channels[serverId]?.find((c) => c.id === channelId) || {
-    id: channelId,
-    name: "mood-board",
-    serverId,
-    type: "canvas" as const,
+  const { channels } = useGoonStore();
+  const currentChannel = channels[serverId]?.find((c) => c.id === channelId) ?? {
+    id: channelId, name: "moodboard", serverId, type: "canvas" as const, description: "",
   };
 
-  const textClass = currentServer.color === "red" 
-    ? "text-[#ff0033]" 
-    : currentServer.color === "green" 
-      ? "text-[#00ff66]" 
-      : "text-neutral-400";
+  const color = "#00ff66";
 
   return (
     <LiveblocksRoomProvider id={channelId}>
-      <div className="flex-1 flex flex-col h-full bg-[#000000] font-mono overflow-hidden">
-        {/* Canvas Channel Header */}
-        <div className="h-14 border-b border-neutral-900 px-6 flex items-center justify-between shrink-0 bg-black/40 z-10 select-none">
-          <div className="flex items-center gap-2">
-            <Maximize size={14} className={`${textClass} rotate-45`} />
-            <span className="font-black text-neutral-100 uppercase tracking-tight">
-              {currentChannel.name}
-            </span>
-            <span className="text-neutral-700 mx-2">|</span>
-            <span className="text-[10px] text-neutral-500 uppercase tracking-wider">
-              SPATIAL WORKSPACE
+      <div className="flex-1 flex flex-col h-full bg-[#000000] overflow-hidden">
+        {/* Sub-header for canvas-specific info */}
+        <div
+          className="h-9 border-b border-neutral-900/60 px-4 flex items-center gap-3 shrink-0 bg-[#020202]"
+          style={{ borderBottomColor: `${color}20` }}
+        >
+          <div className="flex items-center gap-1.5">
+            <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: color }} />
+            <span className="text-[9px] font-bold uppercase tracking-widest" style={{ color }}>
+              Live Canvas
             </span>
           </div>
-          <div className="flex items-center gap-1.5 text-[9px] text-neutral-600 font-bold uppercase tracking-widest">
-            <Cpu size={10} className="text-[#00ff66]" /> Liveblocks Room Active
+          <div className="text-neutral-800">|</div>
+          <span className="text-[9px] text-neutral-700 font-medium">
+            {currentChannel.description || "Spatial moodboard workspace"}
+          </span>
+          <div className="ml-auto flex items-center gap-2 text-[9px] text-neutral-700 font-bold uppercase tracking-widest">
+            <LayoutTemplate size={9} />
+            {channelId}
           </div>
         </div>
 
-        {/* Spatial Canvas Viewport */}
-        <div className="flex-1 w-full h-full relative">
+        {/* Spatial Canvas */}
+        <div className="flex-1 w-full relative">
           <NexusCanvas />
         </div>
       </div>

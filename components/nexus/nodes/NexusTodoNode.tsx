@@ -4,11 +4,12 @@ import React, { useState } from "react";
 import { NodeProps } from "@xyflow/react";
 import { Plus, X, CheckSquare, Square } from "lucide-react";
 import { NexusNodeWrapper } from "../NexusNodeWrapper";
-import { useCanvasStore, type CustomNode, type TodoItem } from "@/store/canvasStore";
+import { useUpdateNodeData, useDeleteNode } from "@/lib/liveblocks";
+import { type CustomNode, type TodoItem } from "@/store/canvasStore";
 
 export const NexusTodoNode: React.FC<NodeProps<CustomNode>> = ({ id, data, selected }) => {
-  const updateNodeData = useCanvasStore((state) => state.updateNodeData);
-  const deleteNode = useCanvasStore((state) => state.deleteNode);
+  const updateNodeData = useUpdateNodeData();
+  const deleteNode = useDeleteNode();
   const [newTodoText, setNewTodoText] = useState("");
 
   const title = data.title || "CHECKLIST";

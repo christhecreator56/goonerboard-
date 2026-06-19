@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { NodeProps } from "@xyflow/react";
 import { Link2, ExternalLink, Globe } from "lucide-react";
 import { NexusNodeWrapper } from "../NexusNodeWrapper";
-import { useCanvasStore, type CustomNode } from "@/store/canvasStore";
+import { useUpdateNodeData, useDeleteNode } from "@/lib/liveblocks";
+import { type CustomNode } from "@/store/canvasStore";
 
 export const NexusSocialLinkNode: React.FC<NodeProps<CustomNode>> = ({ id, data, selected }) => {
-  const updateNodeData = useCanvasStore((state) => state.updateNodeData);
-  const deleteNode = useCanvasStore((state) => state.deleteNode);
+  const updateNodeData = useUpdateNodeData();
+  const deleteNode = useDeleteNode();
 
   const title = data.title || "LINK EMBED";
   const url = data.url || "";

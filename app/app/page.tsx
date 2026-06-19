@@ -3,18 +3,12 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-export default function AppPage() {
+export default function AppHome() {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace("/app/nexus-prime");
+    router.replace("/app/rizz-hq");
   }, [router]);
 
-  return (
-    <div className="flex-1 bg-[#000000] flex items-center justify-center font-mono">
-      <div className="text-xs text-neutral-500 uppercase tracking-widest animate-pulse">
-        CONNECTING TO CORE PROTOCOL...
-      </div>
-    </div>
-  );
+  return null;
 }

@@ -72,6 +72,7 @@ export const DocNode: React.FC<NodeProps<CustomNode>> = ({ id, data, selected })
       editorRef.current.innerHTML = content;
       editorRef.current.focus();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditing]);
 
   return (

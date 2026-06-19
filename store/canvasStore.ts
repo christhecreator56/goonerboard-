@@ -12,7 +12,7 @@ import {
   type Connection,
 } from "@xyflow/react";
 
-export interface CanvasNodeData extends Record<string, any> {
+export interface CanvasNodeData extends Record<string, unknown> {
   title?: string;
   text?: string;
   items?: TodoItem[];
@@ -43,7 +43,7 @@ export interface CanvasState {
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
   addNode: (type: CustomNode["type"], x: number, y: number) => void;
-  updateNodeData: (nodeId: string, data: any) => void;
+  updateNodeData: (nodeId: string, data: Partial<CanvasNodeData>) => void;
   deleteNode: (nodeId: string) => void;
   clearCanvas: () => void;
 }
@@ -140,7 +140,7 @@ export const useCanvasStore = create<CanvasState>()(
       },
       addNode: (type, x, y) => {
         const id = `${type}-${Date.now()}`;
-        let initialData: any = {};
+        let initialData: CanvasNodeData = {};
 
         switch (type) {
           case "textNode":

@@ -32,7 +32,7 @@ export default function TextChannelPage() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [channelMessages]);
+  }, [channelMessages.length]);
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();

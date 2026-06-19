@@ -12,7 +12,7 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { usePathname } from "next/navigation";
-import { useCanvasStore } from "@/store/canvasStore";
+import { useCanvasStore, type CustomNode } from "@/store/canvasStore";
 import { useUpdateMyPresence } from "@/lib/liveblocks";
 import { MultiplayerCursors } from "./MultiplayerCursors";
 
@@ -98,16 +98,16 @@ function CanvasInner() {
         y: event.clientY,
       });
 
-      addNode(type as any, position.x, position.y);
+      addNode(type as CustomNode["type"], position.x, position.y);
     },
     [screenToFlowPosition, addNode]
   );
 
   // Quick Spawn Nodes at viewport center
-  const spawnNode = (type: string) => {
+  const spawnNode = (type: CustomNode["type"]) => {
     const x = 300 + Math.random() * 100;
     const y = 200 + Math.random() * 100;
-    addNode(type as any, x, y);
+    addNode(type, x, y);
   };
 
   return (

@@ -32,7 +32,20 @@ export const MockRoomProvider: React.FC<{ id: string; children: React.ReactNode 
     color: "#00ff66",
   });
 
-  const [others, setOthers] = useState<Array<{ id: string; presence: Presence }>>([]);
+  const [others, setOthers] = useState<Array<{ id: string; presence: Presence }>>(() => {
+    const mockUsers = [
+      { id: "user-1", name: "sigmaboy_99", color: "#ff0033" },
+      { id: "user-2", name: "void_walker", color: "#a855f7" },
+    ];
+    return mockUsers.map((u) => ({
+      id: u.id,
+      presence: {
+        cursor: { x: 300 + Math.random() * 200, y: 200 + Math.random() * 200 },
+        username: u.name,
+        color: u.color,
+      },
+    }));
+  });
 
   const updatePresence = (p: Partial<Presence>) => {
     setPresence((prev) => ({ ...prev, ...p }));
@@ -40,23 +53,6 @@ export const MockRoomProvider: React.FC<{ id: string; children: React.ReactNode 
 
   // Simulate multiple online users moving their cursors
   useEffect(() => {
-    // Initialize mock users
-    const mockUsers = [
-      { id: "user-1", name: "sigmaboy_99", color: "#ff0033" },
-      { id: "user-2", name: "void_walker", color: "#a855f7" },
-    ];
-
-    setOthers(
-      mockUsers.map((u) => ({
-        id: u.id,
-        presence: {
-          cursor: { x: 300 + Math.random() * 200, y: 200 + Math.random() * 200 },
-          username: u.name,
-          color: u.color,
-        },
-      }))
-    );
-
     const interval = setInterval(() => {
       setOthers((prevOthers) =>
         prevOthers.map((o) => {

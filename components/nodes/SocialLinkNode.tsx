@@ -44,7 +44,7 @@ interface SocialMetadata {
   platform: "youtube" | "twitter" | "instagram" | "github" | "spotify" | "generic";
   platformName: string;
   color: string;
-  icon: any;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
 }
 
 export const SocialLinkNode: React.FC<NodeProps<CustomNode>> = ({ id, data, selected }) => {
@@ -142,12 +142,14 @@ export const SocialLinkNode: React.FC<NodeProps<CustomNode>> = ({ id, data, sele
       
       // Parse some nice dummy info if not already there
       let inferredTitle = metadata.title;
-      let inferredDesc = metadata.description;
+      const inferredDesc = metadata.description;
       
       try {
         const domain = new URL(formattedUrl).hostname.replace("www.", "");
         inferredTitle = `${metadata.platformName} - ${domain}`;
-      } catch (err) {}
+      } catch {
+        // Ignored
+      }
 
       updateNodeData(id, {
         url: formattedUrl,

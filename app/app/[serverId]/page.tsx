@@ -52,7 +52,7 @@ export default function ServerPage() {
         {/* Text Channels Segment */}
         <div className="flex flex-col gap-4">
           <h2 className="text-xs font-black uppercase text-neutral-400 tracking-widest border-b border-neutral-900 pb-2">
-            // TEXT COMMUNICATIONS
+            {"// TEXT COMMUNICATIONS"}
           </h2>
           <div className="flex flex-col gap-2">
             {serverChannels
@@ -80,7 +80,7 @@ export default function ServerPage() {
         {/* Spatial Canvas Segment */}
         <div className="flex flex-col gap-4">
           <h2 className="text-xs font-black uppercase text-neutral-400 tracking-widest border-b border-neutral-900 pb-2">
-            // SPATIAL CANVASES
+            {"// SPATIAL CANVASES"}
           </h2>
           <div className="flex flex-col gap-2">
             {serverChannels

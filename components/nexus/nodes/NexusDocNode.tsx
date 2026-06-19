@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import { NodeProps } from "@xyflow/react";
 import { Notebook, FileText, Check, Plus, Edit3, X, Bold, Italic, Underline, List, Heading1, Heading2 } from "lucide-react";
 import { NexusNodeWrapper } from "../NexusNodeWrapper";
@@ -18,24 +18,32 @@ export const NexusDocNode: React.FC<NodeProps<CustomNode>> = ({ id, data, select
   const [modalTitle, setModalTitle] = useState(title);
   const editorRef = useRef<HTMLDivElement>(null);
 
-  // Sync state changes from editor content
-  const [wordCount, setWordCount] = useState(0);
-  const [charCount, setCharCount] = useState(0);
-  const [snippetText, setSnippetText] = useState("");
+  // Derived stats from content prop (no effects, safe from cascading renders)
+  const cardStats = useMemo(() => {
+    if (typeof window === "undefined") {
+      return { wordCount: 0, snippetText: "" };
+    }
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = content;
+    const text = tempDiv.textContent || tempDiv.innerText || "";
+    return {
+      wordCount: text.trim() === "" ? 0 : text.trim().split(/\s+/).length,
+      snippetText: text.slice(0, 160) + (text.length > 160 ? "..." : ""),
+    };
+  }, [content]);
 
-  const calculateStats = (html: string) => {
+  // Modal active editor statistics
+  const [editorWordCount, setEditorWordCount] = useState(0);
+  const [editorCharCount, setEditorCharCount] = useState(0);
+
+  const calculateEditorStats = (html: string) => {
     if (typeof window === "undefined") return;
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = html;
     const text = tempDiv.textContent || tempDiv.innerText || "";
-    setSnippetText(text.slice(0, 160) + (text.length > 160 ? "..." : ""));
-    setCharCount(text.length);
-    setWordCount(text.trim() === "" ? 0 : text.trim().split(/\s+/).length);
+    setEditorCharCount(text.length);
+    setEditorWordCount(text.trim() === "" ? 0 : text.trim().split(/\s+/).length);
   };
-
-  useEffect(() => {
-    calculateStats(content);
-  }, [content]);
 
   const handleTitleChange = (newTitle: string) => {
     updateNodeData(id, { title: newTitle });
@@ -44,6 +52,7 @@ export const NexusDocNode: React.FC<NodeProps<CustomNode>> = ({ id, data, select
 
   const handleOpenEditor = () => {
     setModalTitle(title);
+    calculateEditorStats(content);
     setIsModalOpen(true);
   };
 
@@ -78,10 +87,10 @@ export const NexusDocNode: React.FC<NodeProps<CustomNode>> = ({ id, data, select
         <div className="flex flex-col gap-3 font-mono">
           <div className="bg-neutral-950 border border-neutral-900 p-3 flex flex-col gap-2 rounded-none">
             <p className="text-[10px] text-neutral-400 leading-relaxed max-h-16 overflow-hidden uppercase line-clamp-3 select-none">
-              {snippetText || "NO CONTENTS YET. INITIALIZE STREAM FEED."}
+              {cardStats.snippetText || "NO CONTENTS YET. INITIALIZE STREAM FEED."}
             </p>
             <div className="border-t border-neutral-900 pt-2 flex items-center justify-between text-[9px] text-neutral-500 font-bold select-none">
-              <span>WORDS: {wordCount}</span>
+              <span>WORDS: {cardStats.wordCount}</span>
               <span>SAVED: {lastSaved}</span>
             </div>
           </div>
@@ -181,15 +190,15 @@ export const NexusDocNode: React.FC<NodeProps<CustomNode>> = ({ id, data, select
                 suppressContentEditableWarning
                 dangerouslySetInnerHTML={{ __html: content }}
                 className="prose prose-invert max-w-none text-neutral-200 text-sm focus:outline-none font-mono min-h-full leading-relaxed uppercase"
-                onInput={(e) => calculateStats((e.target as HTMLDivElement).innerHTML)}
+                onInput={(e) => calculateEditorStats((e.target as HTMLDivElement).innerHTML)}
               />
             </div>
 
             {/* Modal Footer / Stats */}
             <div className="h-12 border-t border-neutral-900 bg-neutral-950 px-6 flex items-center justify-between text-[10px] text-neutral-500 font-bold rounded-none">
               <div className="flex gap-4">
-                <span>WORDS: {wordCount}</span>
-                <span>CHARACTERS: {charCount}</span>
+                <span>WORDS: {editorWordCount}</span>
+                <span>CHARACTERS: {editorCharCount}</span>
               </div>
               <button
                 onClick={handleSaveDocument}

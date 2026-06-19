@@ -12,7 +12,7 @@ import {
 import "@xyflow/react/dist/style.css";
 import { Plus, Minus } from "lucide-react";
 
-import { useCanvasStore } from "@/store/canvasStore";
+import { useCanvasStore, type CustomNode } from "@/store/canvasStore";
 import { TextNode } from "./nodes/TextNode";
 import { TodoNode } from "./nodes/TodoNode";
 import { TableNode } from "./nodes/TableNode";
@@ -68,7 +68,7 @@ const CanvasInner: React.FC = () => {
         y: event.clientY,
       });
 
-      addNode(type as any, position.x, position.y);
+      addNode(type as CustomNode["type"], position.x, position.y);
     },
     [screenToFlowPosition, addNode]
   );
